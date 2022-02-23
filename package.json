@@ -1,0 +1,27 @@
+{
+  "name": "material-colors-bot",
+  "version": "1.0.0",
+  "description": "",
+  "main": "dist/src/index.js",
+  "type": "module",
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "watch": "tsc -p tsconfig.json -w",
+    "start": "node ./dist/src/index.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@material/material-color-utilities": "^0.1.1",
+    "dotenv": "^16.0.0",
+    "puppeteer": "^13.4.0",
+    "tslib": "^2.3.1",
+    "twitter": "^1.7.1",
+    "twitter-api-v2": "^1.11.0"
+  },
+  "devDependencies": {
+    "@types/node": "^17.0.19",
+    "typescript": "^4.5.5"
+  }
+}
