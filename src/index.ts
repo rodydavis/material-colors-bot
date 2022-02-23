@@ -7,7 +7,6 @@ import { TwitterApi } from "twitter-api-v2";
 import puppeteer from "puppeteer";
 import * as fs from "fs";
 
-// const client = new TwitterApi(process.env.TWITTER_BEARER_TOKEN);
 const client = new TwitterApi({
   appKey: process.env.TWITTER_CONSUMER_KEY,
   appSecret: process.env.TWITTER_CONSUMER_SECRET,
@@ -17,11 +16,12 @@ const client = new TwitterApi({
 const roClient = client.readOnly;
 const api = client.v2;
 
+const accounts = ["@everycolorbot", "@EveryPalette"];
+
 async function getUsers() {
-  const users = await roClient.v2.usersByUsernames([
-    "everycolorbot",
-    "EveryPalette",
-  ]);
+  const users = await roClient.v2.usersByUsernames(
+    accounts.map((account) => account.replace("@", ""))
+  );
   return users.data;
 }
 
@@ -74,7 +74,7 @@ function generateUrl(options: {
 }
 
 async function screenshotUrl(url: string, id: string) {
-  console.log(`screenshotting ${url}`);
+  console.log(`Taking screenshot for ${url}`);
   const browser = await puppeteer.launch();
   const page = await browser.newPage();
   await page.setViewport({
@@ -150,6 +150,7 @@ async function main() {
     sb.push(`${url}`);
 
     const tweetText = sb.join("\n");
+    console.log('Tweet:', tweetText);
     const mediaId = await client.v1.uploadMedia(file);
     try {
       const newTweet = await api.tweet(tweetText, {
@@ -158,9 +159,9 @@ async function main() {
         },
         quote_tweet_id: tweet.id,
       });
-      console.log(`Tweeted ${newTweet}`);
+      console.log(`Tweet success: ${newTweet}`);
     } catch (error) {
-      console.log('Error tweeting:', error);
+      console.log("Tweet error:", error);
     }
   }
 }
