@@ -1,3 +1,4 @@
 dist
 .env
 screenshots
+node_modules
